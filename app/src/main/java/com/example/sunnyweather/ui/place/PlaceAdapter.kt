@@ -1,6 +1,7 @@
 package com.example.sunnyweather.ui.place
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,11 @@ class PlaceAdapter(private val fragment: Fragment,
             val place = placeList[position]
             val intent = Intent(parent.context, WeatherActivity::class.java).apply {
                 putExtra("location_lng", place.location.lng)
+                Log.d("PlaceAdapter", "onCreateViewHolder: location_lng is ${place.location.lng}")
                 putExtra("location_lat", place.location.lat)
+                Log.d("PlaceAdapter", "onCreateViewHolder: location_lat is ${place.location.lat}")
                 putExtra("place_name", place.name)
+                Log.d("PlaceAdapter", "onCreateViewHolder: place_name is ${place.name}")
             }
             fragment.startActivity(intent)
         }

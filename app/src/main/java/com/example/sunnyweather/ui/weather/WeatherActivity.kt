@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sunnyweather.R
 import com.example.sunnyweather.databinding.ActivityWeatherBinding
@@ -18,7 +17,7 @@ import java.util.*
 
 class WeatherActivity : AppCompatActivity() {
     lateinit var binding: ActivityWeatherBinding
-    val  viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
+    val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +28,12 @@ class WeatherActivity : AppCompatActivity() {
             viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
         }
         if(viewModel.locationLat.isEmpty()) {
-            viewModel.locationLng = intent.getStringExtra("location_lat") ?: ""
+            viewModel.locationLat = intent.getStringExtra("location_lat") ?: ""
         }
         if(viewModel.placeName.isEmpty()) {
-            viewModel.locationLng = intent.getStringExtra("place_name") ?: ""
+            viewModel.placeName = intent.getStringExtra("place_name") ?: ""
         }
-        viewModel.weatherLiveData.observe(this,  Observer { result ->
+        viewModel.weatherLiveData.observe(this) { result ->
             val weather = result.getOrNull()
             if (weather != null) {
                 showWeatherInfo(weather)
@@ -42,7 +41,7 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
     }
 
